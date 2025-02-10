@@ -10,7 +10,7 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 $app = AppFactory::create();
 
-$app->get('/', function (Request $request, Response $response) {
+$app->get('/api/groups', function (Request $request, Response $response) {
 
     $response->getBody()->write("Hello, world!");
     return $response;
