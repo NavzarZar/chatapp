@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1a5c4aaf03ad82c31bfc40ef1b70d3c",
+    "content-hash": "b26d183e48210c6e21c769ded2c7a604",
     "packages": [
         {
             "name": "fig/http-message-util",
@@ -765,7 +765,9 @@
     "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {},
+    "platform": {
+        "ext-sqlite3": "*"
+    },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
