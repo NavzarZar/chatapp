@@ -2,7 +2,9 @@
     "require": {
         "slim/slim": "^4.14",
         "slim/psr7": "^1.7",
-        "ext-sqlite3": "*"
+        "ext-sqlite3": "*",
+        "php-di/php-di": "^7.0",
+      "ext-pdo": "*"
     },
     "autoload": {
         "psr-4": {
