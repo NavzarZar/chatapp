@@ -5,18 +5,21 @@ namespace Database\Migrations;
 use SQLite3;
 
 class CreateTables {
+    private string $databasePath;
+
+    public function __construct(string $databasePath) {
+        $this->databasePath = $databasePath;
+    }
+
     public function up()
     {
-        $config = require __DIR__ . '/../../config/database_config.php';
-
-        echo "Database path: " . $config['database_path'] . "\n";
-        $db = new SQLite3($config['database_path']);
+        $db = new SQLite3($this->databasePath);
 
         // Create 'user' table
         $db->exec("CREATE TABLE IF NOT EXISTS user (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE NOT NULL,
-            token TEXT UNIQUE NOT NULL
+            token TEXT NOT NULL
         )");
 
         // Create 'chat_group' table
@@ -28,20 +31,21 @@ class CreateTables {
         // Create 'message' table
         $db->exec("CREATE TABLE IF NOT EXISTS message (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER UNIQUE NOT NULL,
-            group_id INTEGER UNIQUE NOT NULL,
+            user_id INTEGER NOT NULL,
+            group_id INTEGER NOT NULL,
             message TEXT NOT NULL,
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES user (id),
             FOREIGN KEY (group_id) REFERENCES chat_group (id)
+            UNIQUE(user_id, group_id, message, timestamp) -- Ensure unique messages
         )");
 
 
         // Create table 'group-user' since it's a many-to-many relationship.
         $db->exec("CREATE TABLE IF NOT EXISTS group_user (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER UNIQUE NOT NULL,
-            group_id INTEGER UNIQUE NOT NULL,
+            user_id INTEGER NOT NULL,
+            group_id INTEGER NOT NULL,
             FOREIGN KEY (user_id) REFERENCES user (id),
             FOREIGN KEY (group_id) REFERENCES chat_group (id)
             UNIQUE (user_id, group_id) -- Ensure unique pairs of user and group.
