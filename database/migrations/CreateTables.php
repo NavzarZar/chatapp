@@ -7,7 +7,10 @@ use SQLite3;
 class CreateTables {
     public function up()
     {
-        $db = new SQLite3(__DIR__ . '/../chat.db');
+        $config = require __DIR__ . '/../../config/database_config.php';
+
+        echo "Database path: " . $config['database_path'] . "\n";
+        $db = new SQLite3($config['database_path']);
 
         // Create 'user' table
         $db->exec("CREATE TABLE IF NOT EXISTS user (

@@ -13,6 +13,8 @@ $container->set(PDO::class, function() use ($config) {
     // Get the path from configuration
     $path = $config['database_path'];
 
+    echo "Connecting to database at $path\n";
+
     // Throw exception if file does not exist
     if (!file_exists($path)) {
         throw new Exception("Database file not found: $path");
@@ -32,3 +34,5 @@ $container->set(PDO::class, function() use ($config) {
     }
 
 });
+
+return $container;
