@@ -7,11 +7,13 @@ class User {
     private ?int $id;
     private string $username;
     private string $token;
+    private string $token_expiry;
 
-    public function __construct(?int $id, string $username, string $token) {
+    public function __construct(?int $id, string $username, string $token, string $token_expiry) {
         $this->id = $id;
         $this->username = $username;
         $this->token = $token;
+        $this->token_expiry = $token_expiry;
     }
 
     public function getId(): ?int {
@@ -24,6 +26,10 @@ class User {
 
     public function getToken(): string {
         return $this->token;
+    }
+
+    public function getTokenExpiry(): string {
+        return $this->token_expiry;
     }
 
     public function setUsername(string $username) {

@@ -26,9 +26,9 @@ class PopulateDatabase {
         $createTables->up();
 
         // Insert some users
-        $db->exec("INSERT INTO user (username, token) VALUES ('alice', 'alice_token')");
-        $db->exec("INSERT INTO user (username, token) VALUES ('bob', 'bob_token')");
-        $db->exec("INSERT INTO user (username, token) VALUES ('charlie', 'charlie_token')");
+        $db->exec("INSERT INTO user (username, token, token_expiry) VALUES ('alice', 'alice_token', '2100-01-01 00:00:00')");
+        $db->exec("INSERT INTO user (username, token, token_expiry) VALUES ('bob', 'bob_token', '2100-01-01 00:00:00')");
+        $db->exec("INSERT INTO user (username, token, token_expiry) VALUES ('charlie', 'charlie_token', '2100-01-01 00:00:00')");
 
         // Insert some chat groups
         $db->exec("INSERT INTO chat_group (name) VALUES ('group1')");

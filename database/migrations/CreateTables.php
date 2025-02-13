@@ -19,7 +19,8 @@ class CreateTables {
         $db->exec("CREATE TABLE IF NOT EXISTS user (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE NOT NULL,
-            token TEXT NOT NULL
+            token TEXT UNIQUE NOT NULL,
+            token_expiry DATETIME
         )");
 
         // Create 'chat_group' table
