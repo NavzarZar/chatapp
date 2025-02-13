@@ -1,4 +1,7 @@
 <phpunit bootstrap="vendor/autoload.php">
+    <php>
+        <env name="APP_ENV" value="test"/>
+    </php>
     <testsuites>
         <testsuite name="Chatapp Test Suite">
             <directory>./test</directory>
