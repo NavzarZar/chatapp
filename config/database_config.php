@@ -6,8 +6,10 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
 
-// Get the set environment or default to test.
-$databasePath = (__DIR__ . '/../' . $_ENV['DATABASE_PATH']) ?? '/data/test.db';
+// Make sure that if APP_ENV is set to test, we only use the test database
+$databasePath = ($_ENV['APP_ENV'] === 'test')
+    ? __DIR__ . '/../data/test.db'
+    : $_ENV['DATABASE_PATH'];
 
 return [
      'database_path' => $databasePath // Path to the test db
