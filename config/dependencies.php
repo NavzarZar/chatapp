@@ -4,9 +4,15 @@ use DI\ContainerBuilder;
 
 use App\Repository\UserRepository;
 use App\Repository\UserRepositoryImpl;
+use App\Repository\GroupRepository;
+use App\Repository\GroupRepositoryImpl;
 
 use App\Service\UserService;
 use App\Service\UserServiceImpl;
+use App\Service\GroupService;
+use App\Service\GroupServiceImpl;
+
+
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -39,13 +45,22 @@ $containerBuilder->addDefinitions([
         }
         },
 
-        // Repository bindings
+        // REPOSITORY BINDINGS
+        // User
         UserRepository::class => DI\autowire(UserRepositoryImpl::class),
         UserRepositoryImpl::class => DI\autowire(),
+        // Group
+        GroupRepository::class => DI\autowire(GroupRepositoryImpl::class),
+        GroupRepositoryImpl::class => DI\autowire(),
 
-        // Service Bindings
+
+        // SERVICE BINDINGS
+        // User
         UserService::class => DI\autowire(UserServiceImpl::class),
         UserServiceImpl::class => DI\autowire(),
+        // Group
+        GroupService::class => DI\autowire(GroupServiceImpl::class),
+        GroupServiceImpl::class => DI\autowire(),
     ]
 );
 

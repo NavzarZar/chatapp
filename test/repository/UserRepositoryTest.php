@@ -4,10 +4,6 @@ use PHPUnit\Framework\TestCase;
 use App\Repository\UserRepository;
 use App\Model\User;
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
-$dotenv->load();
-
-
 class UserRepositoryTest extends TestCase
 {
     private UserRepository $userRepository;
