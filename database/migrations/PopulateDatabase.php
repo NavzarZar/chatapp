@@ -36,9 +36,9 @@ class PopulateDatabase {
         $db->exec("INSERT INTO chat_group (name) VALUES ('group3')");
 
         // Insert some messages
-        $db->exec("INSERT INTO message (user_id, group_id, message) VALUES (1, 1, 'Hello')");
-        $db->exec("INSERT INTO message (user_id, group_id, message) VALUES (2, 1, 'Hi')");
-        $db->exec("INSERT INTO message (user_id, group_id, message) VALUES (3, 1, 'Hey')");
+        $db->exec("INSERT INTO message (user_id, group_id, content, timestamp) VALUES (1, 1, 'Hello', '2021-01-01 00:00:00')");
+        $db->exec("INSERT INTO message (user_id, group_id, content, timestamp) VALUES (2, 1, 'Hi', '2021-01-01 00:00:00')");
+        $db->exec("INSERT INTO message (user_id, group_id, content, timestamp) VALUES (3, 1, 'Hey', '2021-01-01 00:00:00')");
 
         // Insert some group-user relationships
         $db->exec("INSERT INTO group_user (user_id, group_id) VALUES (1, 1)");

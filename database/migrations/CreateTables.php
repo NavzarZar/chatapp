@@ -34,11 +34,11 @@ class CreateTables {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             group_id INTEGER NOT NULL,
-            message TEXT NOT NULL,
+            content TEXT NOT NULL,
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES user (id),
             FOREIGN KEY (group_id) REFERENCES chat_group (id)
-            UNIQUE(user_id, group_id, message, timestamp) -- Ensure unique messages
+            UNIQUE(user_id, group_id, content, timestamp) -- Ensure unique messages
         )");
 
 

@@ -6,11 +6,19 @@ use App\Repository\UserRepository;
 use App\Repository\UserRepositoryImpl;
 use App\Repository\GroupRepository;
 use App\Repository\GroupRepositoryImpl;
+use App\Repository\MessageRepository;
+use App\Repository\MessageRepositoryImpl;
+use App\Repository\GroupUserRepository;
+use App\Repository\GroupUserRepositoryImpl;
 
 use App\Service\UserService;
 use App\Service\UserServiceImpl;
 use App\Service\GroupService;
 use App\Service\GroupServiceImpl;
+use App\Service\MessageService;
+use App\Service\MessageServiceImpl;
+use App\Service\GroupUserService;
+use App\Service\GroupUserServiceImpl;
 
 
 
@@ -52,6 +60,12 @@ $containerBuilder->addDefinitions([
         // Group
         GroupRepository::class => DI\autowire(GroupRepositoryImpl::class),
         GroupRepositoryImpl::class => DI\autowire(),
+        // Message
+        MessageRepository::class => DI\autowire(MessageRepositoryImpl::class),
+        MessageRepositoryImpl::class => DI\autowire(),
+        // GroupUserService
+        GroupUserRepository::class => DI\autowire(GroupUserRepositoryImpl::class),
+        GroupUserRepositoryImpl::class => DI\autowire(),
 
 
         // SERVICE BINDINGS
@@ -61,6 +75,12 @@ $containerBuilder->addDefinitions([
         // Group
         GroupService::class => DI\autowire(GroupServiceImpl::class),
         GroupServiceImpl::class => DI\autowire(),
+        // Message
+        MessageService::class => DI\autowire(MessageServiceImpl::class),
+        MessageServiceImpl::class => DI\autowire(),
+        // GroupUserService
+        GroupUserService::class => DI\autowire(GroupUserServiceImpl::class),
+        GroupUserServiceImpl::class => DI\autowire(),
     ]
 );
 
