@@ -11,7 +11,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../..');
 $dotenv->load();
 
 
-$databasePath = __DIR__ . '/../../' . $_ENV['DATABASE_PATH'];
+$databasePath =$_ENV['DATABASE_PATH'];
 
 // Run the migration
 $migration = new PopulateDatabase($databasePath);

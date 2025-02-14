@@ -39,9 +39,10 @@ $containerBuilder = new ContainerBuilder();
 $containerBuilder->addDefinitions([
         PDO::class => function() use ($config) {
             // Get the path from configuration
-            $path = $config['database_path'];
+            $path = __DIR__ . "/.." . $config['database_path'];
 
-            // Throw exception if file does not exist
+
+
             if (!file_exists($path)) {
             throw new Exception("Database file not found: $path");
         }

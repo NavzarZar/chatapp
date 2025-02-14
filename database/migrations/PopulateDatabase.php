@@ -3,12 +3,13 @@
 namespace Database\Migrations;
 
 use SQLite3;
-use Database\Migrations\CreateTables;
 
 class PopulateDatabase {
+    private string $databasePath;
+
     public function __construct(string $databasePath)
     {
-        $this->databasePath = $databasePath;
+        $this->databasePath = __DIR__ . "/../.." . $databasePath;
     }
 
     public function up()

@@ -8,9 +8,9 @@ $dotenv->load();
 
 // Make sure that if APP_ENV is set to test, we only use the test database
 $databasePath = ($_ENV['APP_ENV'] === 'test')
-    ? __DIR__ . '/../data/test.db'
+    ? '/data/test.db'
     : $_ENV['DATABASE_PATH'];
 
 return [
-     'database_path' => __DIR__ . '/..' . $databasePath // Path to the test db
+     'database_path' => $databasePath // Path to the test db
 ];

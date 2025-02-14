@@ -5,17 +5,22 @@ use App\Service\GroupService;
 use App\Service\GroupServiceImpl;
 use App\Model\Group;
 use App\Repository\GroupRepository;
+use App\Repository\GroupUserRepository;
+use App\Model\GroupUser;
 
 
 class GroupServiceTest extends TestCase {
 
     private GroupService $groupService;
     private GroupRepository $groupRepository;
+    private GroupUserRepository $groupUserRepository;
 
     public function setUp() : void
     {
         $this->groupRepository = $this->createMock(GroupRepository::class);
-        $this->groupService = new GroupServiceImpl($this->groupRepository);
+        $this->groupUserRepository = $this->createMock(GroupUserRepository::class);
+
+        $this->groupService = new GroupServiceImpl($this->groupRepository, $this->groupUserRepository);
     }
 
     public function testGetGroupById()
@@ -37,7 +42,16 @@ class GroupServiceTest extends TestCase {
             ->with(new Group(null, 'test'))
             ->willReturn($group);
 
-        $this->assertEquals($group, $this->groupService->createGroup('test'));
+        $this->groupRepository->expects($this->once())
+            ->method('findByName')
+            ->with('test')
+            ->willReturn($group);
+
+        $this->groupUserRepository->expects($this->once())
+            ->method('save')
+            ->with(new GroupUser(null, 1, 1));
+
+        $this->assertEquals($group, $this->groupService->createGroup('test', 1));
     }
 
     public function testUpdateGroup()
