@@ -33,7 +33,7 @@ class UserRepositoryImpl implements UserRepository {
             'token_expiry' => $user->getTokenExpiry()
         ]);
 
-        $newUserId = (int) $this->pdo->lastInsertId();
+        $newUserId = (int)$this->pdo->lastInsertId();
 
         return new User($newUserId, $user->getUsername(), $user->getToken(), $user->getTokenExpiry());
     }
@@ -52,7 +52,7 @@ class UserRepositoryImpl implements UserRepository {
     public function updateToken(int $userId, string $newToken, string $expiresAt): void
     {
         // Update user token
-        $stmt = $this->pdo->prepare("UPDATE user SET token = :token, token_expiry = :expiresAt WHERE id = :id");
+        $stmt = $this->pdo->prepare("UPDATE user SET token = :token, token_expiry = :token_expiry WHERE id = :id");
         $stmt->execute([
             'token' => $newToken,
             'token_expiry' => $expiresAt,

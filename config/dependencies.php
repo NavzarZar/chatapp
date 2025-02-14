@@ -2,6 +2,8 @@
 
 use DI\ContainerBuilder;
 
+
+// Repos
 use App\Repository\UserRepository;
 use App\Repository\UserRepositoryImpl;
 use App\Repository\GroupRepository;
@@ -11,6 +13,7 @@ use App\Repository\MessageRepositoryImpl;
 use App\Repository\GroupUserRepository;
 use App\Repository\GroupUserRepositoryImpl;
 
+// Services
 use App\Service\UserService;
 use App\Service\UserServiceImpl;
 use App\Service\GroupService;
@@ -20,7 +23,12 @@ use App\Service\MessageServiceImpl;
 use App\Service\GroupUserService;
 use App\Service\GroupUserServiceImpl;
 
+// Controllers
+use App\Controller\UserController;
+use App\Controller\GroupController;
 
+// Middleware
+use App\Middleware\AuthMiddleware;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -32,8 +40,6 @@ $containerBuilder->addDefinitions([
         PDO::class => function() use ($config) {
             // Get the path from configuration
             $path = $config['database_path'];
-
-            echo "Connecting to database at $path\n";
 
             // Throw exception if file does not exist
             if (!file_exists($path)) {
@@ -81,6 +87,16 @@ $containerBuilder->addDefinitions([
         // GroupUserService
         GroupUserService::class => DI\autowire(GroupUserServiceImpl::class),
         GroupUserServiceImpl::class => DI\autowire(),
+
+
+        // CONTROLLER BINDINGS
+        // User
+        UserController::class => DI\autowire(),
+        GroupController::class => DI\autowire(),
+
+
+        // MIDDLEWARE BINDINGS
+        AuthMiddleware::class => DI\autowire(AuthMiddleware::class),
     ]
 );
 

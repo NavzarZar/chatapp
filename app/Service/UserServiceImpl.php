@@ -9,7 +9,7 @@ use App\Model\User;
 class UserServiceImpl implements UserService {
     private UserRepository $userRepository;
 
-    private $tokenBytes = 16;
+    private $tokenBytes = 32;
 
     public function __construct(UserRepository $userRepository) {
         $this->userRepository = $userRepository;
