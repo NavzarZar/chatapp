@@ -49,7 +49,7 @@ class UserRepositoryTest extends TestCase
     public function testFindById()
     {
         // Insert a user into the database
-        $user = $this->userRepository->save(new User(null, 'test', 'test'));
+        $user = $this->userRepository->save(new User(null, 'test', 'test', '2100-01-01 00:00:00'));
 
         // Get his id
         $id = $user->getId();
@@ -64,7 +64,7 @@ class UserRepositoryTest extends TestCase
     public function testSaveUser()
     {
         // Create a user
-        $user = new User(null, 'test2', 'test2');
+        $user = new User(null, 'test2', 'test2', '2100-01-01 00:00:00');
 
         // Save the user
         $savedUser = $this->userRepository->save($user);

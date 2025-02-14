@@ -71,4 +71,13 @@ class UserRepositoryImpl implements UserRepository {
 
         return $data ? new User($data['id'], $data['username'], $data['token'], $data['token_expiry']) : null;
     }
+
+    public function updateTokenExpiry(int $userId, string $expiresAt): void
+    {
+        $stmt = $this->pdo->prepare("UPDATE user SET token_expiry = :expiresAt WHERE id = :id");
+        $stmt->execute([
+            'expiresAt' => $expiresAt,
+            'id' => $userId
+        ]);
+    }
 }

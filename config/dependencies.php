@@ -1,8 +1,12 @@
 <?php
 
 use DI\ContainerBuilder;
+
 use App\Repository\UserRepository;
 use App\Repository\UserRepositoryImpl;
+
+use App\Service\UserService;
+use App\Service\UserServiceImpl;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -34,11 +38,14 @@ $containerBuilder->addDefinitions([
             throw new Exception("Failed to connect to the database: " . $e->getMessage());
         }
         },
-        // Bind the UserRepository interface to the UserRepositoryImpl class
-        UserRepository::class => DI\autowire(UserRepositoryImpl::class),
 
-        // Autowire the UserRepositoryImpl class
-        UserRepositoryImpl::class => DI\autowire()
+        // Repository bindings
+        UserRepository::class => DI\autowire(UserRepositoryImpl::class),
+        UserRepositoryImpl::class => DI\autowire(),
+
+        // Service Bindings
+        UserService::class => DI\autowire(UserServiceImpl::class),
+        UserServiceImpl::class => DI\autowire(),
     ]
 );
 
