@@ -8,7 +8,7 @@ class DeleteAllTables {
     private string $databasePath;
 
     public function __construct(string $databasePath) {
-        $this->databasePath = __DIR__ . "/../.." . $databasePath;
+        $this->databasePath = realpath(__DIR__ . "/../../" . $databasePath);
     }
 
     public function up() {

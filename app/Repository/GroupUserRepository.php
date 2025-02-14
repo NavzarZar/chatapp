@@ -12,4 +12,5 @@ interface GroupUserRepository {
     public function findAll() : array;
     public function findByUserId(int $userId) : array;
     public function findByGroupId(int $groupId) : array;
+    public function getUsersFromGroup(int $groupId) : array;
 }

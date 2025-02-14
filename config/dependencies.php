@@ -39,7 +39,7 @@ $containerBuilder = new ContainerBuilder();
 $containerBuilder->addDefinitions([
         PDO::class => function() use ($config) {
             // Get the path from configuration
-            $path = __DIR__ . "/.." . $config['database_path'];
+            $path = __DIR__ . "/../" . $config['database_path'];
 
 
 

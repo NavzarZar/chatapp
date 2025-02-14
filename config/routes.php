@@ -16,13 +16,17 @@ return function (App $app) {
         $groupController = $container->get(GroupController::class);
 
         $group->post('/groups', [$groupController, 'createGroup']);
+        $group->get('/groups/users/{group_id}', [$groupController, 'getUsersFromGroup']);
+        $group->post('/groups/join/{group_id}', [$groupController, 'joinGroup']);
     })->add($container->get(AuthMiddleware::class));
 
     // No need for authorization
     $app->group('/api', function ($group) use ($container) {
 
         $userController = $container->get(UserController::class);
+        $groupController = $container->get(GroupController::class);
 
         $group->post('/session', [$userController, 'createSession']);
+        $group->get('/groups', [$groupController, 'listGroups']);
     });
 };

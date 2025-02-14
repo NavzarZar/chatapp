@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use PDO;
 use App\Model\GroupUser;
+use App\Model\User;
 
 class GroupUserRepositoryImpl implements GroupUserRepository {
 
@@ -97,5 +98,23 @@ class GroupUserRepositoryImpl implements GroupUserRepository {
         }
 
         return $userGroups;
+    }
+
+    public function getUsersFromGroup(int $groupId) : array
+    {
+        // Get users from specific group, join with user table to get all users, return array of users
+        $stmt = $this->pdo->prepare("SELECT user.id, user.username, user.token, user.token_expiry FROM user JOIN group_user ON user.id = group_user.user_id WHERE group_user.group_id = :group_id");
+
+        $stmt->execute(['group_id' => $groupId]);
+
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Return array of User instances
+        $users = [];
+        foreach ($data as $user) {
+            $users[] = new User($user['id'], $user['username'], $user['token'], $user['token_expiry']);
+        }
+
+        return $users;
     }
 }

@@ -8,7 +8,7 @@ class CreateTables {
     private string $databasePath;
 
     public function __construct(string $databasePath) {
-        $this->databasePath = $databasePath;
+        $this->databasePath = realpath(__DIR__ . "/../../" . $databasePath);
     }
 
     public function up()

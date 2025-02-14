@@ -4,6 +4,9 @@ use PHPUnit\Framework\TestCase;
 use App\Repository\UserRepository;
 use App\Model\User;
 
+use Database\Migrations\PopulateDatabase;
+use Database\Migrations\DeleteAllTables;
+
 class UserRepositoryTest extends TestCase
 {
     private UserRepository $userRepository;
@@ -16,7 +19,19 @@ class UserRepositoryTest extends TestCase
 
         // Get UserRepository from the container
         $this->userRepository = $this->container->get(UserRepository::class);
+
+        // Populate the database from container
+        $populator = new PopulateDatabase('/data/test.db');
+        $populator->up();
     }
+
+    protected function tearDown() : void
+    {
+        // Delete all tables from the database
+        $deleter = new DeleteAllTables('/data/test.db');
+        $deleter->up();
+    }
+
 
     public function testPDOAutowired() {
 

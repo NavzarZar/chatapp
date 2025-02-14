@@ -22,6 +22,18 @@ class GroupUserServiceImpl implements GroupUserService
 
     public function save(GroupUser $userGroup): GroupUser
     {
+        // Check if tuple exists already
+        $existingUserGroup = $this->userGroupRepository->findByUserId($userGroup->getUserId());
+        // Array of group ids
+        $groupIds = array_map(function($group) {
+            return $group->getGroupId();
+        }, $existingUserGroup);
+
+        if (in_array($userGroup->getGroupId(), $groupIds)) {
+            // Throw exception, user already in group
+            throw new \PDOException('User already in group', 409);
+        }
+
         return $this->userGroupRepository->save($userGroup);
     }
 
@@ -48,5 +60,21 @@ class GroupUserServiceImpl implements GroupUserService
     public function findByGroupId(int $groupId): array
     {
         return $this->userGroupRepository->findByGroupId($groupId);
+    }
+
+    public function getUsersFromGroup(int $groupId, int $userId): array
+    {
+        // Only return users from group if user in group
+        $users = $this->userGroupRepository->getUsersFromGroup($groupId);
+        $userIds = array_map(function($user) {
+            return $user->getId();
+        }, $users);
+
+        if (in_array($userId, $userIds)) {
+            return $users;
+        } else {
+            // Throw exception, user not in group
+            throw new \PDOException('User not in group', 404);
+        }
     }
 }

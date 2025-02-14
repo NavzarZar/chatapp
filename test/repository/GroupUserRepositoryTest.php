@@ -4,6 +4,9 @@ use App\Repository\GroupUserRepository;
 use App\Model\GroupUser;
 use PHPUnit\Framework\TestCase;
 
+use Database\Migrations\PopulateDatabase;
+use Database\Migrations\DeleteAllTables;
+
 class GroupUserRepositoryTest extends TestCase
 {
     private GroupUserRepository $userGroupRepository;
@@ -17,6 +20,17 @@ class GroupUserRepositoryTest extends TestCase
 
         // Get GroupUserRepository from the container
         $this->userGroupRepository = $this->container->get(GroupUserRepository::class);
+
+        // Populate the database from container
+        $populator = new PopulateDatabase('/data/test.db');
+        $populator->up();
+    }
+
+    protected function tearDown() : void
+    {
+        // Delete all tables from the database
+        $deleter = new DeleteAllTables('/data/test.db');
+        $deleter->up();
     }
 
     public function testFindById(): void

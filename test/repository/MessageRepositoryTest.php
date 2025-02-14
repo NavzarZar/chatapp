@@ -4,6 +4,9 @@ use PHPUnit\Framework\TestCase;
 use App\Repository\MessageRepository;
 use App\Model\Message;
 
+use Database\Migrations\PopulateDatabase;
+use Database\Migrations\DeleteAllTables;
+
 class MessageRepositoryTest extends TestCase
 {
     private MessageRepository $messageRepository;
@@ -18,6 +21,17 @@ class MessageRepositoryTest extends TestCase
 
         // Get MessageRepository from the container
         $this->messageRepository = $this->container->get(MessageRepository::class);
+
+         // Populate the database from container
+        $populator = new PopulateDatabase('/data/test.db');
+        $populator->up();
+    }
+
+    protected function tearDown() : void
+    {
+        // Delete all tables from the database
+        $deleter = new DeleteAllTables('/data/test.db');
+        $deleter->up();
     }
 
     public function testFindById(): void
