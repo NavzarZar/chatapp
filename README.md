@@ -38,34 +38,36 @@ Practically, every single singleton class has all necessary dependencies injecte
 ### Authentication
 **All endpoints under `/api/` (except `/session` and listing groups) require a Bearer token.**  
 To get a token, send a request to `/api/session` with a `username`.
+After obtaining a token, make sure to include it as Authorization Bearer token.
+Tokens expire after an hour.
 
-| Method | Endpoint       | Description                                      | Auth Required |
-|--------|--------------|--------------------------------------------------|--------------|
-| `POST` | `/api/session` | Creates or updates a session for a user, returns an authentication token.  | No |
+| Method | Endpoint       | Description                                                                     | Auth Required |
+|--------|--------------|---------------------------------------------------------------------------------|--------------|
+| `POST` | `/api/session` | Creates or updates a session for a user, returns an authentication token. (1hr) | No |
 
 
 ---
 
 ### Groups
 
-| Method | Endpoint                       | Description                                             | Auth Required |
-|--------|--------------------------------|--------------------------------------------------------|--------------|
-| `POST` | `/api/groups`                  | Creates a group. The creator is automatically added.  | Yes |
-| `GET`  | `/api/groups`                  | Lists all available groups.                           | No |
-| `GET`  | `/api/groups/users/{group_id}` | Retrieves all users in a specific group.             | Yes |
-| `POST` | `/api/groups/join/{group_id}`  | Adds the authenticated user to a group.              | Yes |
-| `DELETE` | `/api/groups/leave/{group_id}` | Removes the authenticated user from a group.       | Yes |
+| Method | Endpoint                       | Description                                                            | Auth Required |
+|--------|--------------------------------|------------------------------------------------------------------------|--------------|
+| `POST` | `/api/groups`                  | Creates a group. The creator is automatically added.                   | Yes |
+| `GET`  | `/api/groups`                  | Lists all available groups.                                            | No |
+| `GET`  | `/api/groups/users/{group_id}` | Retrieves all users in a specific group. User must be in the group.    | Yes |
+| `POST` | `/api/groups/join/{group_id}`  | Adds the authenticated user to a group.                                | Yes |
+| `DELETE` | `/api/groups/leave/{group_id}` | Removes the authenticated user from a group. User must be in the group | Yes |
 
 
 ---
 
 ### Messages
 
-| Method | Endpoint                          | Description                                        | Auth Required |
-|--------|----------------------------------|--------------------------------------------------|--------------|
-| `POST` | `/api/groups/{group_id}/messages` | Sends a message in a group.                      | Yes |
-| `GET`  | `/api/groups/{group_id}/messages` | Retrieves messages from a group.                 | Yes |
-| `DELETE` | `/api/groups/{group_id}/messages/{message_id}` | Deletes a message (only sender can delete). | Yes |
+| Method | Endpoint                          | Description                                             | Auth Required |
+|--------|----------------------------------|---------------------------------------------------------|--------------|
+| `POST` | `/api/groups/{group_id}/messages` | Sends a message in a group. User must be in group.      | Yes |
+| `GET`  | `/api/groups/{group_id}/messages` | Retrieves messages from a group. User must be in group. | Yes |
+| `DELETE` | `/api/groups/{group_id}/messages/{message_id}` | Deletes a message (only sender can delete).             | Yes |
 
 
 ---
