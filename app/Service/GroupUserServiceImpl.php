@@ -34,6 +34,12 @@ class GroupUserServiceImpl implements GroupUserService
             throw new \PDOException('User already in group', 409);
         }
 
+        // If group doesn't exist throw error
+        $group = $this->userGroupRepository->findById($userGroup->getGroupId());
+        if ($group === null) {
+            throw new \PDOException('Group not found', 404);
+        }
+
         return $this->userGroupRepository->save($userGroup);
     }
 
