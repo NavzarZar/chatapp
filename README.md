@@ -90,6 +90,8 @@ DATABASE_PATH=data/test.db
 ```
 The **`DATABASE_PATH` must be a relative path** from the root directory, without a leading slash.
 
+It should not be called `test.db` as it is used for testing purposes.
+
 Also, there should be an existent .db file in the path specified.
 
 ---
@@ -119,7 +121,9 @@ To verify that everything is working correctly, run:
 ```bash
 php vendor/bin/phpunit
 ```
-This will run tests for **controllers, services, and repositories** to ensure expected behavior.
+This will run tests for **services, and repositories** to ensure expected behavior.
+
+`test.db` needs to exist in data/ directory.
 
 ---
 Enjoy!
