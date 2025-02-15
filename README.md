@@ -122,9 +122,13 @@ To verify that everything is working correctly, run:
 ```bash
 php vendor/bin/phpunit
 ```
+IMPORTANT: `test.db` needs to exist in data/ directory, which should be in root.
+
+root:
+- data/test.db
+
 This will run tests for **services, and repositories** to ensure expected behavior.
 
-`test.db` needs to exist in data/ directory.
 
 ---
 Enjoy!
