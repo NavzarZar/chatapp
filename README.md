@@ -70,9 +70,11 @@ To verify that everything is working correctly, run:
 ```bash
 php vendor/bin/phpunit
 ```
-IMPORTANT: `test.db` needs to exist in data/ directory, which should be in root.
+IMPORTANT: tests remove all data from the test database
 
-root:
+IMPORTANT: tests are set up to always run on `test.db`
+
+IMPORTANT: `test.db` needs to exist in data/ directory, which should be in root.
 - data/test.db
 
 This will run tests for **services, and repositories** to ensure expected behavior.
