@@ -11,4 +11,5 @@ interface MessageRepository {
     public function delete(int $id) : void;
     public function findAll() : array;
     public function findByContent(string $content) : array;
+    public function findByGroupId(int $groupId);
 }

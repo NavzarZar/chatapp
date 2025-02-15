@@ -26,6 +26,7 @@ use App\Service\GroupUserServiceImpl;
 // Controllers
 use App\Controller\UserController;
 use App\Controller\GroupController;
+use App\Controller\MessageController;
 
 // Middleware
 use App\Middleware\AuthMiddleware;
@@ -94,6 +95,7 @@ $containerBuilder->addDefinitions([
         // User
         UserController::class => DI\autowire(),
         GroupController::class => DI\autowire(),
+        MessageController::class => DI\autowire(),
 
 
         // MIDDLEWARE BINDINGS

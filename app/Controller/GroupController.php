@@ -108,6 +108,24 @@ class GroupController {
         }
     }
 
+    public function leaveGroup(Request $request, Response $response) : Response {
+        try {
+            // Get group id from request attribute
+            $groupId = $request->getAttribute('group_id');
+
+            // Get user id from request attribute
+            $userId = $request->getAttribute('user_id');
+
+            $this->groupUserService->delete($userId, $groupId);
+
+            return $this->jsonResponse($response, 200, ['message' => 'User left group successfully']);
+        } catch (\Exception $e) {
+            return $this->jsonResponse($response, $e->getCode(), ['error' => $e->getMessage()]);
+        } catch (\Throwable $e) {
+            return $this->jsonResponse($response, 500, ['error' => 'Internal server error']);
+        }
+    }
+
     private function jsonResponse(Response $response, int $status, $data) : Response {
         $response->getBody()->write(json_encode($data));
         return $response

@@ -86,4 +86,19 @@ class MessageRepositoryImpl implements MessageRepository
 
         return $messages;
     }
+
+    public function findByGroupId(int $groupId)
+    {
+        $stmt = $this->pdo->prepare('SELECT * FROM message WHERE group_id = :group_id');
+        $stmt->execute(['group_id' => $groupId]);
+
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $messages = [];
+        foreach ($data as $message) {
+            $messages[] = new Message($message['id'], $message['user_id'], $message['group_id'], $message['content'], $message['timestamp']);
+        }
+
+        return $messages;
+    }
 }

@@ -32,7 +32,7 @@ class MessageServiceTest extends TestCase {
             ->with(new Message(null, 1, 1, 'test', '2021-08-01 00:00:00'))
             ->willReturn($message);
 
-        $this->assertEquals($message, $this->messageService->createMessage(1, 1, 'test', '2021-08-01 00:00:00'));
+        $this->assertEquals($message, $this->messageService->sendMessage(1, 1, 'test', '2021-08-01 00:00:00'));
     }
 
     public function testUpdateMessage() {
