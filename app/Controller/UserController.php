@@ -15,22 +15,23 @@ class UserController {
     }
 
     public function createSession(Request $request, Response $response) : Response {
+
+        // Get body data
         $data = json_decode($request->getBody()->getContents(), true);
 
-        $redirectUrl = $request->getQueryParams()['redirect'] ?? null;
-
+        // Check if username is empty
         if (empty($data['username'])) {
             return $this->jsonResponse($response, 400, ['error' => 'Username is required']);
         }
 
-
+        // Create the actual session
         $user = $this->userService->createOrGetSession($data['username']);
 
         $response = $response->withHeader('Authorization', 'Bearer ' . $user->getToken())
             ->withHeader('Content-Type', 'application/json');
 
 
-        $response = $this->jsonResponse($response, 200,
+        return $this->jsonResponse($response, 200,
             [
                 'user_id' => $user->getId(),
                 'username' => $user->getUsername(),
@@ -38,15 +39,6 @@ class UserController {
                 'expires_at' => $user->getTokenExpiry()
             ]
         );
-
-
-        if ($redirectUrl) {
-            $response = $response->withHeader('Redirect-To', $redirectUrl);
-        }
-
-        return $response;
-
-
     }
 
 

@@ -2,142 +2,123 @@
 
 ## Project Overview
 
-This is a **chat application backend** built using **PHP** with the **Slim Framework** and **SQLite** for database management. It follows **a clean architecture** with **dependency injection** (DI) for managing services and repositories. Authentication is token-based, and authorization is handled via middleware. User must pass create a session, and use the session token for any authorization-based requests.
 
-### **Technologies Used**
+# Chat Application Backend - Full Setup and Usage Guide
 
-- **PHP** (Slim Framework for routing)
-- **SQLite** (Database)
-- **PDO** (Database access)
-- **PHP-DI** (Dependency Injection)
-- **PHPUnit** (Testing)
+## Project Overview
+
+This is a chat application backend built using **PHP** with the **Slim Framework** and **SQLite**. It follows a **clean architecture** where:
+
+- **Controllers** handle HTTP requests and responses.
+- **Services** contain business logic.
+- **Repositories** handle database access using **PDO**.
+- **Middleware** manages authentication using **Bearer tokens**.
+
+The backend provides **group-based messaging** where users can create, join, and leave groups, send messages, and retrieve message history.
+
+Authentication works based on "sessions" where a user can obtain a **Bearer token** by providing a username. This token is then used to access protected endpoints.
+
+Obviously, this can be changed easily to use a more secure authentication method, unfortunately there were time constraints :)
+
+Practically, every single singleton class has all necessary dependencies injected into its constructor. This makes it easy to test and swap out implementations.
+
+---
+
+## Folder structure
+- **app** - contains controllers, middleware, model, services, repo
+- **config** - contains configurations such as routes, database location and the DI container setup
+- **database** - contains migration scripts
+- **public** - contains the index.php file that serves as the entry point for the application
+- **tests** - contains unit tests for services, and repositories
 
 ---
 
 ## API Endpoints
 
-### **Authentication & Sessions**
+### Authentication
+**All endpoints under `/api/` (except `/session` and listing groups) require a Bearer token.**  
+To get a token, send a request to `/api/session` with a `username`.
 
-| Method | Endpoint       | Description                                          |
-| ------ | -------------- | ---------------------------------------------------- |
-| `POST` | `/api/session` | Creates a session for a user (logs in or registers). |
+| Method | Endpoint       | Description                                      | Auth Required |
+|--------|--------------|--------------------------------------------------|--------------|
+| `POST` | `/api/session` | Creates or updates a session for a user, returns an authentication token.  | No |
 
-> **Note:** The session endpoint returns a **token** that must be passed as an `Authorization` header for all authorized requests.
-
-### **Groups**
-
-| Method | Endpoint                       | Description                                              |
-| ------ | ------------------------------ | -------------------------------------------------------- |
-| `POST` | `/api/groups`                  | Creates a new group. The creator is automatically added. **(Requires Authorization Token)** |
-| `GET`  | `/api/groups`                  | Lists all available groups.                              |
-| `GET`  | `/api/groups/users/{group_id}` | Retrieves users in a group. **(Requires Authorization Token)** |
-| `POST` | `/api/groups/join/{group_id}`  | Adds the authenticated user to a group. **(Requires Authorization Token)** |
 
 ---
 
-## **Dependency Injection (DI)**
+### Groups
 
-The project uses **PHP-DI** to manage dependencies.
+| Method | Endpoint                       | Description                                             | Auth Required |
+|--------|--------------------------------|--------------------------------------------------------|--------------|
+| `POST` | `/api/groups`                  | Creates a group. The creator is automatically added.  | Yes |
+| `GET`  | `/api/groups`                  | Lists all available groups.                           | No |
+| `GET`  | `/api/groups/users/{group_id}` | Retrieves all users in a specific group.             | Yes |
+| `POST` | `/api/groups/join/{group_id}`  | Adds the authenticated user to a group.              | Yes |
+| `DELETE` | `/api/groups/leave/{group_id}` | Removes the authenticated user from a group.       | Yes |
 
-### **Example: Setting Up DI in `dependencies.php`**
-
-```php
-use DI\Container;
-use App\Repository\UserRepository;
-use App\Repository\UserRepositoryImpl;
-use App\Service\UserService;
-use App\Service\UserServiceImpl;
-use PDO;
-
-$container = new Container();
-
-$container->set(PDO::class, function() {
-    return new PDO("sqlite:" . __DIR__ . '/../data/database.db', null, null, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]);
-});
-
-$container->set(UserRepository::class, DI\autowire(UserRepositoryImpl::class));
-$container->set(UserService::class, DI\autowire(UserServiceImpl::class));
-```
-
-✔ **Ensures that all services and repositories are injected where needed.**
 
 ---
 
-## **Middleware for Authentication**
+### Messages
 
-All protected routes are wrapped inside a **route group with authentication middleware**.
+| Method | Endpoint                          | Description                                        | Auth Required |
+|--------|----------------------------------|--------------------------------------------------|--------------|
+| `POST` | `/api/groups/{group_id}/messages` | Sends a message in a group.                      | Yes |
+| `GET`  | `/api/groups/{group_id}/messages` | Retrieves messages from a group.                 | Yes |
+| `DELETE` | `/api/groups/{group_id}/messages/{message_id}` | Deletes a message (only sender can delete). | Yes |
 
-### **Example: Protecting Routes in `routes.php`**
-
-```php
-$app->group('/api', function ($group) use ($container) {
-    $groupController = $container->get(GroupController::class);
-    $group->post('/groups', [$groupController, 'createGroup']);
-    $group->get('/groups/users/{group_id}', [$groupController, 'getUsersFromGroup']);
-    $group->post('/groups/join/{group_id}', [$groupController, 'joinGroup']);
-})->add($container->get(AuthMiddleware::class));
-```
-
-✔ **Ensures that only authenticated users can create or join groups.**
-
-> **Authorization:** For all protected routes, the token obtained from `/api/session` must be passed in the request headers as:
-> ```
-> Key: Authorization | Value: YOUR_TOKEN_HERE
-> ```
 
 ---
 
-## **Running Tests**
+## Setting Up the Project
 
-The project includes **unit tests** for services and repositories.
-
-### **Run Tests**
-
-```bash
-php vendor/bin/phpunit
-```
-
-✔ **Tests automatically reset the database before each run.**
-
----
-
-## **How to Run the Project**
-
-### **Install Dependencies**
-
+### 1. Install Dependencies
+Ensure **PHP and Composer** are installed, then run:
 ```bash
 composer install
 ```
 
-### **Set Up the Database**
+---
 
-Before running the application, ensure that you have set the **database file path** in your `.env` file:
-
-```env
-DATABASE_PATH=data/database.db
+### 2. Configure Environment Variables
+Create a `.env` file in the project root with the following content:
 ```
+APP_ENV=development
+DATABASE_PATH=data/test.db
+```
+The **`DATABASE_PATH` must be a relative path** from the root directory, without a leading slash.
 
-Then, run:
+Also, there should be an existent .db file in the path specified.
 
+---
+
+### 3. Create Database Tables
+Run the migration script to generate all tables:
 ```bash
 php database/migrations/run_migration.php
 ```
-migration inside should be the populate tables one, if not change it.
+This will execute the **CreateTables** migration to create necessary tables in the SQLite database.
 
-### **Start the Server**
+Other migrations are available, such as populate the database with some initial data or delete tables.
 
+---
+
+### 4. Start the Server
+Run the PHP built-in server and serve from the `public/` directory:
 ```bash
 php -S localhost:8000 -t public/
 ```
+Your API is now accessible at `http://localhost:8000`.
 
-✔ **Now, the API is running at** `http://localhost:8000`. Enjoy!
+---
 
---- 
+### 5. Run Tests
+To verify that everything is working correctly, run:
+```bash
+php vendor/bin/phpunit
+```
+This will run tests for **controllers, services, and repositories** to ensure expected behavior.
 
-- Chatbots used for some tests and documentation
-
-Enjoy!!! 
-
+---
+Enjoy!
+---

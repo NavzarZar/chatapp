@@ -14,5 +14,5 @@ $dotenv->load();
 $databasePath =$_ENV['DATABASE_PATH'];
 
 // Run the migration
-$migration = new \Database\Migrations\PopulateDatabase($databasePath);
+$migration = new \Database\Migrations\CreateTables($databasePath);
 $migration->up();

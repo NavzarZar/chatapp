@@ -23,9 +23,8 @@ class PopulateDatabase {
         $db->exec("DROP TABLE IF EXISTS message");
         $db->exec("DROP TABLE IF EXISTS group_user");
 
-        // Create 'user' table
 
-// Create 'user' table
+        // Create 'user' table
         $db->exec("CREATE TABLE IF NOT EXISTS user (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE NOT NULL,

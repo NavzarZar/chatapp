@@ -8,9 +8,9 @@ class Message {
     private int $userId;
     private int $groupId;
     private string $content;
-    private string $timestamp;
+    private ?string $timestamp;
 
-    public function __construct(?int $id, int $userId, int $groupId, string $content, string $timestamp) {
+    public function __construct(?int $id, int $userId, int $groupId, string $content, ?string $timestamp) {
         $this->id = $id;
         $this->userId = $userId;
         $this->groupId = $groupId;

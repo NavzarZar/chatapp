@@ -20,14 +20,14 @@ class AuthMiddleware implements MiddlewareInterface
         $authHeader = $request->getHeaderLine('Authorization');
 
         if (!$authHeader) {
-            return $this->unauthorizedResponse($request);
+            return $this->unauthorizedResponse();
         }
 
         $token = str_replace('Bearer ', '', $authHeader);
         $user = $this->userService->authenticateByToken($token);
 
         if (!$user) {
-            return $this->unauthorizedResponse($request);
+            return $this->unauthorizedResponse();
         }
 
         // Attach user_id to request
