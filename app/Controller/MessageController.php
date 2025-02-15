@@ -71,7 +71,7 @@ class MessageController {
 
             // Format messages
             $formattedMessages = array_map(fn($message) => [
-                'id' => $message->getId(),
+                'message_id' => $message->getId(),
                 'group_id' => $message->getGroupId(),
                 'user_id' => $message->getUserId(),
                 'content' => $message->getContent(),
@@ -79,6 +79,31 @@ class MessageController {
             ], $messages);
 
             return $this->jsonResponse($response, 200, $formattedMessages);
+        } catch (\Exception $e) {
+            return $this->jsonResponse($response, $e->getCode(), ['error' => $e->getMessage()]);
+        } catch (\Throwable $e) {
+            return $this->jsonResponse($response, 500, ['error' => 'Internal server error']);
+        }
+    }
+
+    // Let user delete his own message
+    public function deleteMessage(Request $request, Response $response) : Response {
+        try {
+            // Get message id from request attribute
+            $messageId = $request->getAttribute('message_id');
+
+            // Get user id from request attribute
+            $userId = $request->getAttribute('user_id');
+
+            // Check if message id is empty
+            if (empty($messageId)) {
+                return $this->jsonResponse($response, 400, ['error' => 'Message ID is required']);
+            }
+
+            // Delete message
+            $this->messageService->deleteMessage($userId, $messageId);
+
+            return $this->jsonResponse($response, 200, ['message' => 'Message deleted successfully']);
         } catch (\Exception $e) {
             return $this->jsonResponse($response, $e->getCode(), ['error' => $e->getMessage()]);
         } catch (\Throwable $e) {

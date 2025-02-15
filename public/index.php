@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Slim\Factory\AppFactory;
 use Slim\Middleware\ErrorMiddleware;
-use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
@@ -33,6 +32,7 @@ $customErrorHandler = function (
 // Register routes
 $routes = require __DIR__ . '/../config/routes.php';
 $routes($app);
+
 
 // Add error middleware
 $errorMiddleware = new ErrorMiddleware(

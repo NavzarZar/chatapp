@@ -32,8 +32,15 @@ class MessageServiceImpl implements MessageService {
         return $this->messageRepository->update($message);
     }
 
-    public function deleteMessage(int $id) : void {
-        $this->messageRepository->delete($id);
+    public function deleteMessage(int $userId, int $messageId) : void {
+        // Only delete message if user sent it
+        $message = $this->messageRepository->findById($messageId);
+        if ($message->getUserId() !== $userId) {
+            // Throw exception along with correct code
+            throw new \PDOException('User did not send message', 401);
+        }
+
+        $this->messageRepository->delete($messageId);
     }
 
     public function getAllMessages() : array {

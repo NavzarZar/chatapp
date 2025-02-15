@@ -8,4 +8,5 @@ interface UserService {
     public function getUserById(int $id);
     public function createOrGetSession(string $username) : User;
     public function authenticateByToken(string $token) : ?User;
+    public function updateTokenExpiry(int $userId, string $newExpiry);
 }

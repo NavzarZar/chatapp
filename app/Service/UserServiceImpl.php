@@ -25,6 +25,7 @@ class UserServiceImpl implements UserService {
         // Check if user already exists
         $existingUser = $this->userRepository->findByUsername($username);
 
+
         // Generate random token
         $token = bin2hex(random_bytes($this->tokenBytes));
         $expiresAt = date('Y-m-d H:i:s', strtotime('+1 hour')); // 1 hr expiration
@@ -58,5 +59,10 @@ class UserServiceImpl implements UserService {
         $this->userRepository->updateTokenExpiry($user->getId(), $newExpiresAt);
 
         return new User($user->getId(), $user->getUsername(), $user->getToken(), $newExpiresAt);
+    }
+
+    public function updateTokenExpiry(int $userId, string $newExpiry)
+    {
+        $this->userRepository->updateTokenExpiry($userId, $newExpiry);
     }
 }
