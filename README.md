@@ -86,13 +86,14 @@ composer install
 Create a `.env` file in the project root with the following content:
 ```
 APP_ENV=development
-DATABASE_PATH=data/test.db
+DATABASE_PATH=data/your_database.db
 ```
 The **`DATABASE_PATH` must be a relative path** from the root directory, without a leading slash.
 
 It should not be called `test.db` as it is used for testing purposes.
 
-Also, there should be an existent .db file in the path specified.
+Also, there should be an existent your_database.db file in the path specified.
+Of course, you can change the name of the database file.
 
 ---
 
