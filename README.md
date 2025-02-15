@@ -95,6 +95,8 @@ To get a token, send a request to `/api/session` with a `username`.
 After obtaining a token, make sure to include it as Authorization Bearer token.
 Tokens expire after an hour.
 
+Also, in order to remove error displaying, set the displayErrorDetails argument to false in public/index.php' in the error middleware constructor.
+
 | Method | Endpoint       | Description                                                                     | Auth Required |
 |--------|--------------|---------------------------------------------------------------------------------|--------------|
 | `POST` | `/api/session` | Creates or updates a session for a user, returns an authentication token. (1hr) | No |
