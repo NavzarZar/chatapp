@@ -2,11 +2,6 @@
 
 ## Project Overview
 
-
-# Chat Application Backend - Full Setup and Usage Guide
-
-## Project Overview
-
 This is a chat application backend built using **PHP** with the **Slim Framework** and **SQLite**. It follows a **clean architecture** where:
 
 - **Controllers** handle HTTP requests and responses.
@@ -24,53 +19,6 @@ Practically, every single singleton class has all necessary dependencies injecte
 
 ---
 
-## Folder structure
-- **app** - contains controllers, middleware, model, services, repo
-- **config** - contains configurations such as routes, database location and the DI container setup
-- **database** - contains migration scripts
-- **public** - contains the index.php file that serves as the entry point for the application
-- **tests** - contains unit tests for services, and repositories
-
----
-
-## API Endpoints
-
-### Authentication
-**All endpoints under `/api/` (except `/session` and listing groups) require a Bearer token.**  
-To get a token, send a request to `/api/session` with a `username`.
-After obtaining a token, make sure to include it as Authorization Bearer token.
-Tokens expire after an hour.
-
-| Method | Endpoint       | Description                                                                     | Auth Required |
-|--------|--------------|---------------------------------------------------------------------------------|--------------|
-| `POST` | `/api/session` | Creates or updates a session for a user, returns an authentication token. (1hr) | No |
-
-
----
-
-### Groups
-
-| Method | Endpoint                       | Description                                                            | Auth Required |
-|--------|--------------------------------|------------------------------------------------------------------------|--------------|
-| `POST` | `/api/groups`                  | Creates a group. The creator is automatically added.                   | Yes |
-| `GET`  | `/api/groups`                  | Lists all available groups.                                            | No |
-| `GET`  | `/api/groups/users/{group_id}` | Retrieves all users in a specific group. User must be in the group.    | Yes |
-| `POST` | `/api/groups/join/{group_id}`  | Adds the authenticated user to a group.                                | Yes |
-| `DELETE` | `/api/groups/leave/{group_id}` | Removes the authenticated user from a group. User must be in the group | Yes |
-
-
----
-
-### Messages
-
-| Method | Endpoint                          | Description                                             | Auth Required |
-|--------|----------------------------------|---------------------------------------------------------|--------------|
-| `POST` | `/api/groups/{group_id}/messages` | Sends a message in a group. User must be in group.      | Yes |
-| `GET`  | `/api/groups/{group_id}/messages` | Retrieves messages from a group. User must be in group. | Yes |
-| `DELETE` | `/api/groups/{group_id}/messages/{message_id}` | Deletes a message (only sender can delete).             | Yes |
-
-
----
 
 ## Setting Up the Project
 
@@ -128,6 +76,53 @@ root:
 - data/test.db
 
 This will run tests for **services, and repositories** to ensure expected behavior.
+
+
+## Folder structure
+- **app** - contains controllers, middleware, model, services, repo
+- **config** - contains configurations such as routes, database location and the DI container setup
+- **database** - contains migration scripts
+- **public** - contains the index.php file that serves as the entry point for the application
+- **tests** - contains unit tests for services, and repositories
+
+---
+
+## API Endpoints
+
+### Authentication
+**All endpoints under `/api/` (except `/session` and listing groups) require a Bearer token.**  
+To get a token, send a request to `/api/session` with a `username`.
+After obtaining a token, make sure to include it as Authorization Bearer token.
+Tokens expire after an hour.
+
+| Method | Endpoint       | Description                                                                     | Auth Required |
+|--------|--------------|---------------------------------------------------------------------------------|--------------|
+| `POST` | `/api/session` | Creates or updates a session for a user, returns an authentication token. (1hr) | No |
+
+
+---
+
+### Groups
+
+| Method | Endpoint                       | Description                                                            | Auth Required |
+|--------|--------------------------------|------------------------------------------------------------------------|--------------|
+| `POST` | `/api/groups`                  | Creates a group. The creator is automatically added.                   | Yes |
+| `GET`  | `/api/groups`                  | Lists all available groups.                                            | No |
+| `GET`  | `/api/groups/users/{group_id}` | Retrieves all users in a specific group. User must be in the group.    | Yes |
+| `POST` | `/api/groups/join/{group_id}`  | Adds the authenticated user to a group.                                | Yes |
+| `DELETE` | `/api/groups/leave/{group_id}` | Removes the authenticated user from a group. User must be in the group | Yes |
+
+
+---
+
+### Messages
+
+| Method | Endpoint                          | Description                                             | Auth Required |
+|--------|----------------------------------|---------------------------------------------------------|--------------|
+| `POST` | `/api/groups/{group_id}/messages` | Sends a message in a group. User must be in group.      | Yes |
+| `GET`  | `/api/groups/{group_id}/messages` | Retrieves messages from a group. User must be in group. | Yes |
+| `DELETE` | `/api/groups/{group_id}/messages/{message_id}` | Deletes a message (only sender can delete).             | Yes |
+
 
 
 ---
