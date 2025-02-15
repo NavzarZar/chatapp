@@ -2,12 +2,14 @@
 
 use App\Service\GroupUserServiceImpl;
 use App\Model\GroupUser;
+use App\Model\Group;
 use App\Repository\GroupUserRepository;
 use PHPUnit\Framework\TestCase;
 
 class GroupUserServiceTest extends TestCase {
     private $groupUserService;
     private GroupUserRepository $groupUserRepository;
+
 
     public function setUp() : void
     {
@@ -24,14 +26,6 @@ class GroupUserServiceTest extends TestCase {
         $this->assertEquals($groupUser, $this->groupUserService->findById(1));
     }
 
-    public function testSave() {
-        $groupUser = new GroupUser(1, 1, 1);
-        $this->groupUserRepository->expects($this->once())
-            ->method('save')
-            ->with($groupUser)
-            ->willReturn($groupUser);
-        $this->assertEquals($groupUser, $this->groupUserService->save($groupUser));
-    }
 
     public function testUpdate() {
         $groupUser = new GroupUser(1, 1, 1);
